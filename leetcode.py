@@ -2,7 +2,6 @@ import pandas as pd
 import mysql.connector
 # load excel file
 df = pd.read_excel('leetcode_db.xlsx')
-df.drop(index = 0, inplace=True)
 # change data types
 df[['qno','srno']] = df[['qno','srno']].astype('int')
 print(df.head())
@@ -21,13 +20,14 @@ cur.execute("""create table leetcode(
             qno int,
             question varchar(200),
             link varchar(300),
-            level varchar(10))""")
+            level varchar(10),
+            language varchar(10))""")
 cnx.commit()
 
 for _, row in df.iterrows():
     cur.execute(
-        "INSERT INTO leetcode (srno, qno, question, link, level) VALUES (%s, %s, %s, %s, %s)",
-        (row['srno'], row['qno'], row['question'], row['link'], row['level'])
+        "INSERT INTO leetcode (srno, qno, question, link, level, language) VALUES (%s, %s, %s, %s, %s, %s)",
+        (row['srno'], row['qno'], row['question'], row['link'], row['level'], row['language'])
     )
 cnx.commit()
 cnx.close()

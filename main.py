@@ -1,16 +1,27 @@
 import pandas as pd
+from dotenv import load_dotenv
+import os
 import mysql.connector
+
+# Load variables from .env
+load_dotenv()
+
+db_user = os.getenv("DB_USER")
+db_pass = os.getenv("DB_PASS")
+db_host = os.getenv("DB_HOST")
+db_name = os.getenv("DB_NAME")
+
 # load excel file
 df = pd.read_excel('leetcode_db.xlsx')
 # change data types
 df[['qno','srno']] = df[['qno','srno']].astype('int')
 print(df.head())
 
-cnx = mysql.connector.connect(user='root',
-                              password='PrasadM@2003',
-                              host='127.0.0.1',
-                              database='leetcode')
-
+cnx = mysql.connector.connect(user=db_user,
+                              password=db_pass,
+                              host=db_host,
+                              database=db_name)
+print("Connected to DB:", db_name)
 cur = cnx.cursor()
 
 cur.execute("""drop table leetcode""")
